@@ -1,0 +1,18 @@
+<html>
+<!documentHTML>
+<script src="jquery.js"></script>
+<script>
+	function envia(){
+		$.getJSON("https://economia.awesomeapi.com.br/json/last/USD-BRL", function(data){
+			console.log(data);
+			console.log(data['USDBRL']['ask']);
+		});
+	}
+</script>
+
+<body>
+	<div id="resp" name="resp">
+		<form id="frm_resp" name="frm_resp" method="post" onsubmit="envia()"></form>
+	</div>
+</body>
+</html>
