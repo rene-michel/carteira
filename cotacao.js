@@ -1,42 +1,52 @@
-class usuario{
-    constructor(nome, enail, senha, salario){
+let dat = 0;
+class Usuario{
+    constructor(nome, email, senha, salDolar){
         this.nome = nome;
         this.email = email;
         this.senha = senha;
-        this.salario = salario;
+        this.salDolar = salDolar;
+        this.cot = dat == 0 ? 0 : dat['USDBRL']['ask'];
+        this.salBr = this.salDolar * this.cot;
+        this.liq = this.salBr - this.inss() - this.irrf();
+    }
+
+    atualiza_cot(){
+        this.cot = dat == 0 ? 0 : dat['USDBRL']['ask'];
+    }
+
+    inss(){
+        if(this.salBr >= 0 && this.salBr <= 1212)
+            return this.salBr * 0.075;
+        if(this.salBr >= 1212.01 && this.salBr <= 1427.35)
+            return this.salBr * 0.09;
+        if(this.salBr >= 1427.36 && this.salBr <= 3641.03)
+            return this.salBr * 0.12;
+        if(this.salBr >= 3641.04 && this.salBr <= 7087.22)
+            return this.salBr * 0.14;
+        return 0;
+    }
+
+    irrf(){
+        if(this.salBr >= 1903.99 && this.salBr <= 2826.65)
+            return this.salBr * 0.075;
+        if(this.salBr >= 2826.66 && this.salBr <= 3751.05)
+            return this.salBr * 0.15;
+        if(this.salBr >= 3751.06 && this.salBr <= 4664.68)
+            return this.salBr * 0.225;
+        if(this.salBr >= 4664.69)
+            return this.salBr * 0.275;
     }
 }
 
-function envia(){
-    cot = 0;
-	$.getJSON("https://economia.awesomeapi.com.br/json/last/USD-BRL", function(data){
-		console.log(data);
-        cot = data['USDBRL']['ask'];
-		console.log(cot * 1100);
-		console.log(inss(1100 * cot));
-		console.log(irrf(1100 * cot));
-	});
+setInterval(function(){
+    obter_cot();
+}, 60000);
+
+function obter_cot(){
+    $.getJSON("https://economia.awesomeapi.com.br/json/last/USD-BRL", function(d){
+        dat = d;
+        console.log(d);
+    });
 }
 
-function inss(salario){
-	if(salario >= 0 && salario <= 1212)
-		return salario * 0.075;
-	if(salario >= 1212.01 && salario <= 1427.35)
-		return salario * 0.09;
-	if(salario >= 1427.36 && salario <= 3641.03)
-		return salario * 0.12;
-	if(salario >= 3641.04 && salario <= 7087.22)
-		return salario * 0.14;
-	return 0;
-}
-
-function irrf(salario){
-	if(salario >= 1903.99 && salario <= 2826.65)
-		return salario * 0.075;
-	if(salario >= 2826.66 && salario <= 3751.05)
-		return salario * 0.15;
-	if(salario >= 3751.06 && salario <= 4664.68)
-		return salario * 0.225;
-	if(salario >= 4664.69)
-		return salario * 0.275;
-}
+obter_cot();
