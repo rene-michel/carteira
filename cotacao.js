@@ -21,15 +21,17 @@ function obter_cot(){
 
 obter_cot();
 
-let u=new Usuario('rene','rene.michel@gmail.com', '123456', 1200)
+let u=new Usuario('rene','rene.michel@gmail.com', '123456', 1000)
 let date = new Date();
 console.log(date);
 
 function guarda_cotacao(){
     if(dat == 0)
         return;
+    data = new Date();
+    ts = new Date(dat['USDBRL']['timestamp'] * 1000);
     var p = $.post("cotacao.php", {
-        'data_acesso' : Date.now(),
+        'data_acesso' : data.toLocaleDateString() + " " + data.toLocaleTimeString(),
         'ask' : dat['USDBRL']['ask'],
         'bid' : dat['USDBRL']['bid'],
         'high' : dat['USDBRL']['high'],
@@ -39,7 +41,7 @@ function guarda_cotacao(){
         'code' : dat['USDBRL']['code'],
         'codeIn' : dat['USDBRL']['codein'],
         'create_date' : dat['USDBRL']['create_date'],
-        'timestamp' : dat['USDBRL']['timestamp'],
+        'timestamp' : ts.toLocaleDateString() + " " + ts.toLocaleTimeString(),
         'name' : dat['USDBRL']['name']
     });
     p.done(function(d){
