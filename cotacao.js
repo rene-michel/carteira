@@ -12,10 +12,6 @@ function obter_cot(){
         high = dat == 0 ? 0 : dat['USDBRL']['high'];
         low = dat == 0 ? 0 : dat['USDBRL']['low'];
         console.log(d);
-        console.log('ask ' + ask);
-        console.log('bid ' + bid);
-        console.log('low ' + low);
-        console.log('high ' + high);
     });
 }
 
@@ -30,7 +26,7 @@ function guarda_cotacao(){
         return;
     data = new Date();
     ts = new Date(dat['USDBRL']['timestamp'] * 1000);
-    var p = $.post("cotacao.php", {
+    var p = $.post("cotacao/cotacao.php", {
         'data_acesso' : data.toLocaleDateString() + " " + data.toLocaleTimeString(),
         'ask' : dat['USDBRL']['ask'],
         'bid' : dat['USDBRL']['bid'],
